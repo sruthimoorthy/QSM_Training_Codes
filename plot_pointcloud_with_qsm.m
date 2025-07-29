@@ -12,7 +12,8 @@ function plot_pointcloud_with_qsm(P, cylinder, fig, nf, alp, Bal, Sub, Ind)
 
   %— handle defaults for point size & transparency —%
   
-  if nargin<4 || isempty(nf), nf = 10; end
+  if nargin<4 || isempty(nf), nf = 10;
+  end
   if nargin<5 || isempty(alp), alp = 0.6; end
 
   %— select point indices I based on Bal/Sub —%
@@ -29,6 +30,12 @@ function plot_pointcloud_with_qsm(P, cylinder, fig, nf, alp, Bal, Sub, Ind)
       I = vertcat(Bal{Sub});
     end
   end
+  
+  %— randomly sample 50% of those indices for speed —%
+  sampleFrac = 0.5;                                   % fraction to plot
+  nPts = numel(I);
+  nPlot = round(nPts * sampleFrac);
+  I = I(randperm(nPts, nPlot));   
 
   %— set up figure and plot the point cloud —%
 figure(fig); clf; hold on
